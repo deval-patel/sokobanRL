@@ -36,7 +36,7 @@ class SokobanGame:
     _board: SokobanBoard
     sokoban_stack: SokobanStack
 
-    def __init__(self, board_filename: str = './assets/default.csv') -> None:
+    def __init__(self, board_filename: str = './game/assets/default.csv') -> None:
         """
         Constructs a game of Sokoban with 2 players passed in as parameters
         Sets <whose_turn> to <player1>

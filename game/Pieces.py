@@ -1,6 +1,6 @@
 import pygame
 
-from ImageGenerator import ImageGenerator
+from .ImageGenerator import ImageGenerator
 
 
 class Pieces(ImageGenerator):

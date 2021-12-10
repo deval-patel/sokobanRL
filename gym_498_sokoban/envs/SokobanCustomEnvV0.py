@@ -1,4 +1,4 @@
-
+from typing import Optional
 import numpy as np
 import gym
 from gym import spaces
@@ -33,6 +33,7 @@ class SokobanCustomEnvV0(gym.Env):
 
     def reset(self):
         self.game = gm.SokobanGame()
+        return self.game.get_board()
 
     def render(self, mode='human', close=False):
         print(self.game.get_board_string())

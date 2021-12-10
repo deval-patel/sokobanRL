@@ -1,6 +1,7 @@
-from SokobonCustomEnv import PlayerCustomEnv
-
-env = PlayerCustomEnv(9, 8, 72)
+# from SokobonCustomEnv import PlayerCustomEnv
+import gym
+# env = PlayerCustomEnv(9, 8, 72)
+env = gym.make("gym_498_sokoban:498-sokoban-v0")
 obs = env.reset()
 
 episodes = 1000

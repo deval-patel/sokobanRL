@@ -5,6 +5,7 @@ from .SokobanStack import SokobanStack
 from .RewardSystem import RewardSystem
 import csv
 
+BASE_MAP_PATH = "./gym_498_sokoban/assets/maps/"
 class SokobanGame:
     """
     An SokobanGame class consisting of a game board, and keeping track of which player's
@@ -13,41 +14,33 @@ class SokobanGame:
 
     === Attributes === 
     size : the size of this sokoban game.
-    player1 : Player object representing player 1(Michael).
-    player2 : Player object representing player 2(Ilir).
-    whose_turn : Player whose move it is.
-    board_stack : A stack of Sokoban boards that 
+    board_stack : A stack of Sokoban boards that represent past turns
 
     === Private Attributes ===
 
     _board: 
         Sokoban board object with information on player positions and board layout.
-
-    === Representation Invariants ===
-    - Size must be an odd number greater or equal to 5
-
     """
     # Actions
     UP : int = 0
     DOWN : int = 1
     LEFT: int = 2
     RIGHT: int = 3
-    size: int
+    width: int
+    height: int
     _board: SokobanBoard
     sokoban_stack: SokobanStack
 
-    def __init__(self, board_filename: str = './game/assets/default.csv') -> None:
+    def __init__(self, board_filename: str = BASE_MAP_PATH + 'default.csv') -> None:
         """
-        Constructs a game of Sokoban with 2 players passed in as parameters
-        Sets <whose_turn> to <player1>
-        Sets the <self.size> of Sokoban to the passed in <size> if valid.
-        Precondition: The size must be odd and greater than or equal to 5.
+        Constructs a game of Sokoban.
         """
         turn_limit, player_pos, board = self.get_board_from_file(board_filename)
         self.turn_limit = turn_limit
         self.player_pos = player_pos
-        self.size = len(board)
-        self._board = SokobanBoard(self.size, board)
+        self.height = len(board)
+        self.width = len(board[0])
+        self._board = SokobanBoard(self.width, self.height, board)
         self.og_map = self._board.get_board()
         self._board.set_token(*self.player_pos, Pieces.PLAYER)
         self.num_targets = self._board.get_token_count(Pieces.TARGET)
@@ -198,8 +191,8 @@ class SokobanGame:
         if self.turn_limit == 0:
             return True
         box_positions = []
-        for i in range(self.size):
-            for j in range(self.size):
+        for i in range(self.height):
+            for j in range(self.width):
                 if board[i][j] == Pieces.BOX:
                     box_positions.append((i, j))
         # Check if any box is blocked by checking valid moves from all directions.
@@ -247,13 +240,14 @@ class SokobanGame:
         """
         return self._board.get_board()
 
-    def set_board(self, size: int, board: List[List[str]]) -> None:
+    def set_board(self, board: List[List[str]]) -> None:
         """
         Construct a new SokobanBoard with the given size and preset board.
 
         @param size the dimension of the SokobanBoard
         @param board the preset board state of the SokobanBoard
         """
-        self.size = size
-        self._board = SokobanBoard(self.size, board=board)
+        self.height = len(board)
+        self.width = len(board[0])
+        self._board = SokobanBoard(self.width, self.height, board=board)
 

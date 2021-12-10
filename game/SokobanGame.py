@@ -174,6 +174,8 @@ class SokobanGame:
         self.player_pos = (row_d, col_d)
         # Mark old spot as original position.
         self._board.set_token(row, col, self.og_map[row][col])
+        # Decrement turn limit. 
+        self.turn_limit -= 1
         return self.get_reward(old_board_state)
 
     def is_game_won(self):
@@ -193,6 +195,8 @@ class SokobanGame:
         board = self.sokoban_stack.top()
         if not board:
             return False
+        if self.turn_limit == 0:
+            return True
         box_positions = []
         for i in range(self.size):
             for j in range(self.size):

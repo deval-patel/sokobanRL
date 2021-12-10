@@ -1,6 +1,6 @@
 from SokobonCustomEnv import PlayerCustomEnv
 
-env = PlayerCustomEnv()
+env = PlayerCustomEnv(9, 8, 72)
 obs = env.reset()
 
 episodes = 1000

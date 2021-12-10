@@ -1,8 +1,8 @@
 from typing import List
-from SokobanBoard import SokobanBoard
-from Pieces import Pieces
-from SokobanStack import SokobanStack
-from RewardSystem import RewardSystem
+from .SokobanBoard import SokobanBoard
+from .Pieces import Pieces
+from .SokobanStack import SokobanStack
+from .RewardSystem import RewardSystem
 import csv
 
 class SokobanGame:

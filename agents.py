@@ -1,6 +1,7 @@
+import numpy as np
 class Agent():
 
-    def __init__(observation_space, action_space):
+    def __init__(self, observation_space, action_space):
         self.actions = action_space
         self.states = observation_space
 

@@ -5,6 +5,7 @@ class Agent():
         self.actions = action_space
         self.states = observation_space
         self.policy = np.zeros(self.states.shape, dtype=np.int)
+        print(self.policy.shape)
         self.value  = np.zeros(self.states.shape, dtype=np.int)
 
 

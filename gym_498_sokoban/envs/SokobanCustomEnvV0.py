@@ -14,7 +14,7 @@ class SokobanCustomEnvV0(gym.Env):
         self.game = gm.SokobanGame()
         NUM_ACTIONS = 4
         self.action_space = spaces.Discrete(NUM_ACTIONS)
-        self.observation_space = spaces.Box(low = 0, high=6, shape=(self.game.height, self.game.width, 1), dtype=np.uint8)
+        self.observation_space = spaces.Box(low = 0, high=6, shape=(self.game.height, self.game.width), dtype=np.uint8)
 
     def step(self, action):
         """

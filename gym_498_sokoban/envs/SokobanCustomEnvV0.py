@@ -19,17 +19,14 @@ class SokobanCustomEnvV0(gym.Env):
     def step(self, action):
         """
             Makes a step in the game according to the action. 
-
         """
         reward = self.game.move(action)
         obs = self.game.get_board()
         if self.game.is_game_won():
-            return obs, reward + gm.RewardSystem.get_reward_for_victory(), True, []
-
+            return obs, reward + gm.RewardSystem.get_reward_for_victory(), True, {}
         if self.game.is_game_lost():
-            return obs, reward + gm.RewardSystem.get_reward_for_loss(), True, []
-            
-        return obs, reward, False, []
+            return obs, reward + gm.RewardSystem.get_reward_for_loss(), True, {}
+        return obs, reward, False, {}
 
     def reset(self):
         self.game = gm.SokobanGame()

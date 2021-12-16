@@ -23,7 +23,7 @@ https://github.com/openai/gym/blob/master/docs/creating_environments.md
 
 To run the Sokoban game, ensure that you have activated your python environment, and if desired, installed requirements via running `pip install -r requirements.txt` from the repository root.
 
-To run the Sokoban game, use `python3 gym_498_sokoban/main.py`
+To run the Sokoban game, use `python3 gym_498_sokoban/SokobanController.py`
 
 
 ## Training Scripts

@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3 import DQN, A2C, PPO
-from stable_baselines3.common.env_util import make_vec_env
 from agents.agents import RandomAgent
 import torch as th
 from stable_baselines3.common.logger import configure

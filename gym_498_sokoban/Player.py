@@ -1,5 +1,4 @@
 from __future__ import annotations
-from Pieces import Pieces
 from typing import List
 from random import randint
 from Exceptions import InvalidActionError

@@ -8,9 +8,7 @@ import csv
 BASE_MAP_PATH = "./gym_498_sokoban/assets/maps/"
 class SokobanGame:
     """
-    An SokobanGame class consisting of a game board, and keeping track of which player's
-    move it currently is and some statistics about the game (e.g. how many tokens each player
-    has). It knows who the winner of the game is, and when the game is over.
+    An SokobanGame class consisting of a game board containing the state of the game. It knows who the winner of the game is, and when the game is over.
 
     === Attributes === 
     size : the size of this sokoban game.
@@ -19,7 +17,7 @@ class SokobanGame:
     === Private Attributes ===
 
     _board: 
-        Sokoban board object with information on player positions and board layout.
+        Sokoban board object with information on token positions and board layout.
     """
     # Actions
     UP : int = 0

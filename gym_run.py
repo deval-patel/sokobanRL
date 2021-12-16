@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3 import DQN, A2C, PPO
-from stable_baselines3.common.env_util import make_vec_env
 from agents.agents import RandomAgent
 import torch as th
 from stable_baselines3.common.logger import configure
@@ -58,7 +57,8 @@ class LearningAgent:
 
     def learn(self, timesteps=25000):
         if not self.logger:
-            self.logger = configure(LOG_PATH + self.name, ["stdout", "csv", "tensorboard"])
+            self.logger = configure(LOG_PATH + self.name, ["stdout", "csv"])
+            # self.logger = configure(LOG_PATH + self.name, ["stdout", "csv", "tensorboard"])
         self.model.set_logger(self.logger)
         self.model = self.model.learn(total_timesteps=timesteps,
                 log_interval = 10,

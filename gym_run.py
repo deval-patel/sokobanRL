@@ -11,6 +11,8 @@ from stable_baselines3.common.callbacks import BaseCallback
 import stable_baselines3.common.results_plotter as results_plotter
 import os
 from stable_baselines3.common.monitor import Monitor
+from stable_baselines3.common.results_plotter import load_results, ts2xy
+
 LOG_PATH = 'logs/'
 
 def runRandom():
@@ -47,7 +49,9 @@ class LearningAgent:
         self.logger = None
 
     def applyMonitor(self):
+        print("Set logging to:" + self.getLogPath())
         self.env = Monitor(self.env, self.getLogPath())
+
     def getName(self):
         return self.name
 
@@ -57,12 +61,8 @@ class LearningAgent:
 
     def learn(self, timesteps=25000):
         if not self.logger:
-            self.logger = configure(LOG_PATH + self.name, ["stdout", "csv"])
-            # self.logger = configure(LOG_PATH + self.name, ["stdout", "csv", "tensorboard"])
-        self.model.set_logger(self.logger)
-        self.model = self.model.learn(total_timesteps=timesteps,
-                log_interval = 10,
-            )
+            self.logger = configure(LOG_PATH + self.name, [ "stdout","log", "csv", "tensorboard"])
+        self.model = self.model.learn(total_timesteps=timesteps)
 
     def predict(self, obs):
         '''Given an observation, outputs a predicted action.'''
@@ -84,6 +84,7 @@ class LearningAgent:
         self.model.load(path)
 
 class DQNLearningAgent(LearningAgent):
+    '''DQN -Learning agent'''
     def __init__(self,verbose=1):
         super().__init__()
         self.model = DQN("MlpPolicy", self.env, verbose=verbose)
@@ -91,8 +92,7 @@ class DQNLearningAgent(LearningAgent):
         self.applyMonitor()
 
 class A2CLearningAgent(LearningAgent):
-    '''A2C -Learning agent
-    '''
+    '''A2C -Learning agent'''
     def __init__(self,verbose=1):
         super().__init__()
         self.name = "A2C_Agent_V2"
@@ -110,39 +110,37 @@ class PPOLearningAgent(LearningAgent):
         self.name = "PPO_Agent_V2"
         self.applyMonitor()
         self.env = make_vec_env(self.envName, n_envs=8)
-        policy_kwargs = dict(activation_fn=th.nn.ReLU,
-                     net_arch=[dict(pi=[32, 32, 32], vf=[32, 32, 32])])
-                     
         self.model = PPO("MlpPolicy", self.env, verbose=1)
-        #self.model = A2C("MlpPolicy", self.env,policy_kwargs=policy_kwargs, verbose=verbose)
 
 
 def iterativelyTrainAll(doesPreload = False, steps = 1):
     '''Trains a list of predefined agents for a given number of steps. If preload is enabled, loads from their defined save locations.'''
     agents = [DQNLearningAgent(),A2CLearningAgent(), PPOLearningAgent()]
     os.makedirs(LOG_PATH, exist_ok=True)
-    print("Does preload:")
     if doesPreload:
         for agent in agents:
             agent.load()
-        print("Starting training")
     for agent in agents:
         agent.learn(timesteps=steps)
         agent.save()
-        print("Trained agent:", agent.getName())
     return agents
 
 def evaluateAll(agents, steps):
-    print("Evaluating agents " + str(len(agents)) + " for " + str(steps) + " steps.")
     for agent in agents:
-        print("Evaluating agent: " + agent.getName())
         monitor_path = agent.getLogPath()
-        results_plotter.plot_results([monitor_path], steps, results_plotter.X_TIMESTEPS, agent.getName())
         plt.show()
 
 def runFullTraining():
-    steps = 1000
-    agents = iterativelyTrainAll(1000)
-    evaluateAll(agents, 1000)
+    ''' Acts as an entrypoint to the program. Runs training for all agents, 
+        and evaluates or aggregates their plots and logs.
+        Furthermore, also saves the trained agents.
+        There is an issue such that logs are never collected when "learn" is called.
+    '''
+    steps = 100
+    agents = iterativelyTrainAll(steps)
+    # evaluateAll(agents, steps)
+    # NOTE: Commented out as this function no longer works, and was the main 
+    # blocker for the assessment portion of this assignment.
 
-runFullTraining()
+if __name__ == '__main__':
+    runFullTraining()
